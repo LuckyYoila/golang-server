@@ -6,9 +6,9 @@ import (
 	"fmt"
 )
 
-type API struct {
-	message string 
-	name string 
+type APIResponse struct {
+	Message string "json:message"
+	Name string "json:name"
 }
 
 
@@ -21,22 +21,25 @@ func main(){
 	}
 
 	http.HandleFunc("/api", func (w http.ResponseWriter, r *http.Request) {
-		message := API{
+		message := APIResponse{
 			 "Hello World",
 			 "John Doe",
 		}
 		
 		output , err := json.Marshal(message)
 
+		println(string(output))
+
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		fmt.Fprintf(w, string(output))
+		w.Write(output)
+		// fmt.Fprintf(w, string(output))
 
 	})
-	print("Listening on port 8080")
+	print("Listening on port 8080 \n")
 	running:= Server.ListenAndServe()
 	// if err != nil {
 	// 	fmt.Println(err)
